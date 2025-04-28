@@ -1,0 +1,36 @@
+require('dotenv').config()
+const express = require('express')
+const path = require('path')
+const configViewEngine = require('./config/viewEngine')
+const webRoutes = require('./routes/web')
+const { getAllUsers } = require('./services/user.service')
+const connection = require('./config/database')
+const mongoose = require('mongoose')
+
+const app = express()
+const port = process.env.PORT || 8080
+const host = process.env.HOST_NAME || 'localhost'
+
+//config template engine
+configViewEngine(app);
+
+//config static files
+app.use(express.static(path.join(__dirname, 'public')))
+
+//parse request body
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+//routes
+app.use('/', webRoutes);
+
+(async () => {
+    try {
+        await connection();
+        app.listen(port, host, () => {
+            console.log(`Example app listening on port ${host}:${port}`)
+        })
+    } catch (error) {
+        console.error('Error:', error);
+    }
+})();
