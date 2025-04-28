@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const configViewEngine = require('./config/viewEngine')
-const webRoutes = require('./routes/web')
+const apiRoutes = require('./routes/api')
 const { getAllUsers } = require('./services/user.service')
 const connection = require('./config/database')
 const mongoose = require('mongoose')
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 //routes
-app.use('/', webRoutes);
+app.use('/v1/api', apiRoutes);
 
 (async () => {
     try {
