@@ -3,7 +3,6 @@ const express = require('express')
 const path = require('path')
 const configViewEngine = require('./config/viewEngine')
 const apiRoutes = require('./routes/api')
-const { getAllUsers } = require('./services/user.service')
 const connection = require('./config/database')
 const mongoose = require('mongoose')
 
@@ -12,7 +11,7 @@ const port = process.env.PORT || 8080
 const host = process.env.HOST_NAME || 'localhost'
 
 //config template engine
-configViewEngine(app);
+// configViewEngine(app);
 
 //config static files
 app.use(express.static(path.join(__dirname, 'public')))

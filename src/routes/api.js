@@ -1,10 +1,9 @@
 const express = require('express');
-const { getUserAPI, postUserAPI, putUserAPI, deleteUserAPI } = require('../controllers/apiController');
+const { getPetAPI, postPetAPI, putPetAPI } = require('../controllers/apiController');
 const api = express.Router();
 
-api.get('/users', getUserAPI)
-api.post('/users', postUserAPI)
-api.put('/users', putUserAPI)
-api.delete('/users', deleteUserAPI)
+api.get('/pets', getPetAPI)
+api.post('/pets', postPetAPI)
+api.put('/pets', putPetAPI)
 
 module.exports = api;

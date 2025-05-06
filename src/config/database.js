@@ -23,14 +23,7 @@ const connection = async () => {
     try {
         console.log('Connecting to MongoDB...');
         const options = {
-            user: process.env.DB_USER,
-            pass: process.env.DB_PASSWORD,
             dbName: process.env.DB_NAME,
-            maxPoolSize: 10,
-            minPoolSize: 5,
-            serverSelectionTimeoutMS: 5000,
-            socketTimeoutMS: 45000,
-            connectTimeoutMS: 10
         };
         await mongoose.connect(process.env.DB_HOST, options);
 
