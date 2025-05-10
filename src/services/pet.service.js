@@ -86,7 +86,6 @@ const deletePetByID = async (id) => {
     }
 }
 
-
 module.exports = {
     getAllPet, getPetById, createPet, updatePetByID, deletePetByID
 }

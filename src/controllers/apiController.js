@@ -3,7 +3,7 @@ const { getAllPet, getPetById, createPet, updatePetByID } = require("../services
 
 const getPetAPI = async (req, res) => {
     const { id } = req.query
-    if ( id ) {
+    if (id) {
         try {
             const results = await getPetById(id);
             if (!results) {
@@ -65,7 +65,32 @@ const postPetAPI = async (req, res) => {
         });
     } else {
         try {
-            const result = await createPet(req.body);
+            const { id, name, breed, color, age, weight, gender,
+                neutered,
+                rabies_vaccine,
+                vaccinated,
+                friendly_with_human,
+                friendly_with_dog,
+                friendly_with_cat,
+                special_diet,
+                toilet_trained,
+                des,
+                petType } = req.body;
+            const image = req.file ? req.file.filename : null;
+            const result = await createPet({
+                id, name, breed, color, age, weight, gender,
+                neutered,
+                rabies_vaccine,
+                vaccinated,
+                friendly_with_human,
+                friendly_with_dog,
+                friendly_with_cat,
+                special_diet,
+                toilet_trained,
+                des,
+                petType,
+                image
+            });
             return res.status(200).json({
                 EC: 0,
                 data: result,
@@ -98,31 +123,35 @@ const postPetAPI = async (req, res) => {
 };
 
 const putPetAPI = async (req, res) => {
-    const { id, name, breed, color, age, weight, gender, 
-        neutered, 
-        rabies_vaccine, 
-        vaccinated, 
-        friendly_with_human, 
-        friendly_with_dog, 
-        friendly_with_cat, 
-        special_diet, 
-        toilet_trained, 
-        des, 
-        image,
+    console.log('req.body', req.body);
+    const { id, name, breed, color, age, weight, gender,
+        neutered,
+        rabies_vaccine,
+        vaccinated,
+        friendly_with_human,
+        friendly_with_dog,
+        friendly_with_cat,
+        special_diet,
+        toilet_trained,
+        des,
+        
         petType } = req.body;
+        const image = req.file ? req.file.filename : null;
+        
     try {
-        const result = await updatePetByID(id, {name, breed, color, age, weight, gender, 
-            neutered, 
-            rabies_vaccine, 
-            vaccinated, 
-            friendly_with_human, 
-            friendly_with_dog, 
-            friendly_with_cat, 
-            special_diet, 
-            toilet_trained, 
-            des, 
+        const result = await updatePetByID(id, {
+            name, breed, color, age, weight, gender,
+            neutered,
+            rabies_vaccine,
+            vaccinated,
+            friendly_with_human,
+            friendly_with_dog,
+            friendly_with_cat,
+            special_diet,
+            toilet_trained,
+            des,
             image,
-            petType 
+            petType
         })
         return res.status(200).json({
             EC: 0,

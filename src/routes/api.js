@@ -8,7 +8,7 @@ const api = express.Router();
 api.get('/pets', getPetAPI)
 api.post('/pets', fileUploadMiddleware('petAvatarImage'), postPetAPI)
 
-api.put('/pets', putPetAPI)
+api.put('/pets', fileUploadMiddleware('petAvatarImage'), putPetAPI)
 api.delete('/pets', deletePetAPI)
 
 module.exports = api;
