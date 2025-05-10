@@ -104,26 +104,13 @@ const postPetAPI = async (req, res) => {
             });
         }
     }
-    // if(Array.isArray(req.body)) {
-    //     try {
-    //         const results = await createPet(req.body);
-    //         return res.status(200).json({
-    //             EC: 0,
-    //             data: results,
-    //             message: "Create pets successfully",
-    //         });
-    //     } catch (err) {
-    //         return res.status(500).json({
-    //             EC: 1,
-    //             error: err.message,
-    //             message: "Create pets failed",
-    //         });
-    //     }
-    // }
 };
 
 const putPetAPI = async (req, res) => {
+<<<<<<< HEAD:src/controllers/apiController.js
     console.log('req.body', req.body);
+=======
+>>>>>>> 52b966c333ad4f7aa3eb48c3da6a42cb359f31f6:src/controllers/api_Pet_Controller.js
     const { id, name, breed, color, age, weight, gender,
         neutered,
         rabies_vaccine,
@@ -134,7 +121,11 @@ const putPetAPI = async (req, res) => {
         special_diet,
         toilet_trained,
         des,
+<<<<<<< HEAD:src/controllers/apiController.js
         
+=======
+        image,
+>>>>>>> 52b966c333ad4f7aa3eb48c3da6a42cb359f31f6:src/controllers/api_Pet_Controller.js
         petType } = req.body;
         const image = req.file ? req.file.filename : null;
         
@@ -191,6 +182,7 @@ const deletePetAPI = async (req, res) => {
         });
     }
 }
+
 
 module.exports = {
     getPetAPI, postPetAPI, putPetAPI, deletePetAPI

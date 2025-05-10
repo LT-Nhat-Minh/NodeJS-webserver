@@ -8,6 +8,6 @@ router.get('/', getHomePage);
 router.post('/delete-pet', handleDeletePet);
 
 router.get('/create-pet', getCreatePetPage)
-router.post('/create-pet',fileUploadMiddleware("petAvatar") , handleCreatePet)
+router.post('/create-pet', fileUploadMiddleware("petAvatar"), handleCreatePet)
 
 module.exports = router;
