@@ -3,7 +3,7 @@ const { getAllPet, getPetById, createPet, updatePetByID } = require("../services
 
 const getPetAPI = async (req, res) => {
     const { id } = req.query
-    if ( id ) {
+    if (id) {
         try {
             const results = await getPetById(id);
             if (!results) {
@@ -79,50 +79,35 @@ const postPetAPI = async (req, res) => {
             });
         }
     }
-    // if(Array.isArray(req.body)) {
-    //     try {
-    //         const results = await createPet(req.body);
-    //         return res.status(200).json({
-    //             EC: 0,
-    //             data: results,
-    //             message: "Create pets successfully",
-    //         });
-    //     } catch (err) {
-    //         return res.status(500).json({
-    //             EC: 1,
-    //             error: err.message,
-    //             message: "Create pets failed",
-    //         });
-    //     }
-    // }
 };
 
 const putPetAPI = async (req, res) => {
-    const { id, name, breed, color, age, weight, gender, 
-        neutered, 
-        rabies_vaccine, 
-        vaccinated, 
-        friendly_with_human, 
-        friendly_with_dog, 
-        friendly_with_cat, 
-        special_diet, 
-        toilet_trained, 
-        des, 
+    const { id, name, breed, color, age, weight, gender,
+        neutered,
+        rabies_vaccine,
+        vaccinated,
+        friendly_with_human,
+        friendly_with_dog,
+        friendly_with_cat,
+        special_diet,
+        toilet_trained,
+        des,
         image,
         petType } = req.body;
     try {
-        const result = await updatePetByID(id, {name, breed, color, age, weight, gender, 
-            neutered, 
-            rabies_vaccine, 
-            vaccinated, 
-            friendly_with_human, 
-            friendly_with_dog, 
-            friendly_with_cat, 
-            special_diet, 
-            toilet_trained, 
-            des, 
+        const result = await updatePetByID(id, {
+            name, breed, color, age, weight, gender,
+            neutered,
+            rabies_vaccine,
+            vaccinated,
+            friendly_with_human,
+            friendly_with_dog,
+            friendly_with_cat,
+            special_diet,
+            toilet_trained,
+            des,
             image,
-            petType 
+            petType
         })
         return res.status(200).json({
             EC: 0,
@@ -162,6 +147,7 @@ const deletePetAPI = async (req, res) => {
         });
     }
 }
+
 
 module.exports = {
     getPetAPI, postPetAPI, putPetAPI, deletePetAPI
