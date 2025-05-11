@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
 
 const checkValidJWT = (req, res, next) => {
-    console.log('>>>checkvalidJWT', req.headers);
     //check if token is in the header
     const token = req.headers['authorization'];
     if (!token) {
@@ -30,7 +29,7 @@ const checkValidJWT = (req, res, next) => {
             });
         }
         // Attach the decoded token to the request object
-        req._id = decoded._id;
+        req.body = {id: decoded._id};
     });
     next();
 }

@@ -2,7 +2,7 @@ const express = require('express');
 const { getPetAPI, postPetAPI, putPetAPI, deletePetAPI } = require('../controllers/api_Pet_Controller');
 const fileUploadMiddleware = require('../middleware/multer');
 const { getUserAPI, postUserAPI, putUserAPI, deleteUserAPI } = require('../controllers/api_User_Controller');
-const { loginAPI, registerAPI, logoutAPI } = require('../controllers/api_auth_Controller');
+const { loginAPI, registerAPI, logoutAPI, fetchUserAPI } = require('../controllers/api_auth_Controller');
 const { checkValidJWT, deleteToken } = require('../middleware/jwt.middleware');
 
 const api = express.Router();
@@ -17,7 +17,7 @@ api.post('/users', postUserAPI)
 api.put('/users', putUserAPI)
 api.delete('/users', deleteUserAPI)
 
-api.get('/auth/account', checkValidJWT, getUserAPI);
+api.get('/auth/account', checkValidJWT, fetchUserAPI);
 api.post('/auth/login', loginAPI);
 api.post('/auth/register', registerAPI);
 api.post('/auth/logout', deleteToken, logoutAPI);

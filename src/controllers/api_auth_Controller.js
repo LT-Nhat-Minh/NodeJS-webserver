@@ -1,5 +1,5 @@
 const { create } = require("../models/user");
-const { handleUserLogin, handleUserRegister } = require("../services/user.service");
+const { handleUserLogin, handleUserRegister, getUserById } = require("../services/user.service");
 
 const loginAPI = async (req, res) => {
     try {
@@ -50,25 +50,6 @@ const registerAPI = async (req, res) => {
             statusCode: err.statusCode || 500,
         });
     }
-    
-
-    if (result.EC === 1) {
-        return res.status(400).json({
-            EC: 1,
-            data: null,
-            message: result.message,
-            statusCode: 400,
-        });
-    }
-
-    if (result.EC === 0) {
-        return res.status(200).json({
-            EC: 0,
-            data: result.data,
-            message: result.message,
-            statusCode: 200,
-        });
-    }
 }
 
 const logoutAPI = async (req, res) => {
@@ -76,24 +57,31 @@ const logoutAPI = async (req, res) => {
 
 const fetchUserAPI = async (req, res) => {
     const { id } = req.body;
-        try {
-            const results = await getUserById(id);
-            if (!results) {
-                return res.status(404).json({ message: "User not found" });
-            }
-            return res.status(200).json({
-                EC: 0,
-                data: results,
-                message: "Get user successfully",
-            });
-        }
-        catch (err) {
-            return res.status(500).json({
+    try {
+        const results = await getUserById(id);
+        if (!results) {
+            return res.status(404).json({
                 EC: 1,
-                error: err.message,
-                message: "Get user failed",
+                data: null,
+                message: "User not found",
+                statusCode: 404,
             });
         }
+        return res.status(200).json({
+            EC: 0,
+            data: results.data,
+            message: "Get user successfully",
+            statusCode: 200,
+        });
+    }
+    catch (err) {
+        return res.status(err.statusCode || 500).json({
+            EC: 1,
+            data: null,
+            message: err.message,
+            statusCode: err.statusCode || 500,
+        });
+    }
     
 }
 

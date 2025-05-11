@@ -16,12 +16,27 @@ const getUserById = async (id) => {
     try {
         const result = await User.findById({ _id: id });
         if (!result) {
-            throw new Error('User not found');
+            throw {
+                EC: 1,
+                data: null,
+                message: 'User not found',
+                statusCode: 404,
+            };
         }
-        return result;
+        return {
+            EC: 0,
+            data: result,
+            message: 'Get user successfully',
+            statusCode: 200,
+        };
     } catch (error) {
         console.error('Error fetching user:', error);
-        throw error;
+        throw {
+            EC: 1,
+            data: null,
+            message: 'Error fetching user',
+            statusCode: 500,
+        };
     }
 }
 

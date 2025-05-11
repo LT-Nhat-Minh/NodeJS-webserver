@@ -33,16 +33,19 @@ const getPetAPI = async (req, res) => {
     else {
         try {
             const results = await getAllPet(start, limit);
+            const length = await Pet.countDocuments({});
             return res.status(200).json({
                 EC: 0,
-                data: results,
+                data: results.data,
+                total: length,
                 message: "Get all pets successfully",
             });
         } catch (err) {
             return res.status(500).json({
                 EC: 1,
-                error: err.message,
+                data: null,
                 message: "Get all pets failed",
+                statusCode: 500,
             });
         }
     }
@@ -56,7 +59,7 @@ const postPetAPI = async (req, res) => {
         for (const pet of req.body) {
             try {
                 const result = await createPet(pet);
-                results.push(result);
+                results.push(result.data);
             } catch (err) {
                 errors.push(err.message);
             }
@@ -100,14 +103,16 @@ const postPetAPI = async (req, res) => {
             });
             return res.status(200).json({
                 EC: 0,
-                data: result,
+                data: result.data,
                 message: "Create pet successfully",
+                statusCode: 200,
             });
         } catch (err) {
             return res.status(500).json({
                 EC: 1,
-                error: err.message,
+                data: null,
                 message: "Create pet failed",
+                statusCode: 500,
             });
         }
     }
