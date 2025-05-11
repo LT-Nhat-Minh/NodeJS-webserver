@@ -90,60 +90,68 @@ const handleUserLogin = async (data) => {
     const { email, password } = data;
     // Check if user exists
     const user = await User.findOne({ email });
+
+    if (!user) {
+        throw ({
+            EC: 1,
+            data: null,
+            message: 'Invalid email or password',
+            statusCode: 401,
+        });
+    }
+
     const result = await user.comparePassword(password);
     if (!user || !result) {
-        return res.status(401).json({
+        throw ({
             EC: 1,
+            data: null,
             message: 'Invalid email or password',
+            statusCode: 401,
         });
     }
 
     // Generate JWT token
-    const token = user.generateAuthToken();
+    const token = await user.generateAuthToken();
 
     console.log('User logged in:', user);
     console.log('Generated token:', token);
 
-
-    return token;
+    return {
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+        },
+        access_token: token,
+    }
 };
 
 const handleUserRegister = async (data) => {
     const { name, email, password, phoneNumber } = data;
-    console.log('Registering user:', data);
 
-    try {
-        // Check if user already exists
-        const existingEmail = await User.findOne({ email });
-        if (existingEmail) {
-            return {
-                EC: 1,
-                message: 'Email already exists',
-            };
-        }
-
-        // Create new user
-        const newUser = new User({
-            name,
-            email,
-            password,
-            phoneNumber,
-        });
-        await newUser.save();
-
-        return {
-            EC: 0,
-            message: 'User registered successfully',
-            data: newUser,
-        };
-    }
-    catch (error) {
-        console.error('Error registering user:', error.message);
-        return {
+    // Check if user already exists
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+        throw {
             EC: 1,
-            message: error.message,
+            message: 'Email already exists',
+            data: null,
+            statusCode: 400,
         };
     }
+
+    // Create new user
+    const newUser = new User({
+        name,
+        email,
+        password,
+        phoneNumber,
+    });
+
+    await newUser.save();
+
+    return newUser;
 }
 
 module.exports = {
