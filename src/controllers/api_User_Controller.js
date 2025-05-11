@@ -80,7 +80,7 @@ const postUserAPI = async (req, res) => {
 }
 
 const putUserAPI = async (req, res) => {
-    const { id, name, email, password } = req.body
+    const { id, name, email, password } = req.body;
     if (!id) {
         return res.status(400).json({
             EC: 1,

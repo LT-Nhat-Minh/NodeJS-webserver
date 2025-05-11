@@ -36,6 +36,14 @@ const userSchema = new mongoose.Schema({
     }
 );
 
+userSchema.pre('findOneAndUpdate', async function (next) {
+    const update = this.getUpdate();
+    if (update && update.password) {
+        update.password = await bcrypt.hash(update.password, 10);
+    }
+    next();
+});
+
 userSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 10);
@@ -54,7 +62,7 @@ userSchema.methods.generateAuthToken = async function () {
         role: this.role,
     };
     const token = jwt.sign(payload, JWT_SECRET, {
-        expiresIn: '1',
+        expiresIn: '1d',
     });
     return token;
 };
