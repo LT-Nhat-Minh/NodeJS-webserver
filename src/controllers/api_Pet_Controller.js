@@ -107,10 +107,6 @@ const postPetAPI = async (req, res) => {
 };
 
 const putPetAPI = async (req, res) => {
-<<<<<<< HEAD:src/controllers/apiController.js
-    console.log('req.body', req.body);
-=======
->>>>>>> 52b966c333ad4f7aa3eb48c3da6a42cb359f31f6:src/controllers/api_Pet_Controller.js
     const { id, name, breed, color, age, weight, gender,
         neutered,
         rabies_vaccine,
@@ -121,11 +117,6 @@ const putPetAPI = async (req, res) => {
         special_diet,
         toilet_trained,
         des,
-<<<<<<< HEAD:src/controllers/apiController.js
-        
-=======
-        image,
->>>>>>> 52b966c333ad4f7aa3eb48c3da6a42cb359f31f6:src/controllers/api_Pet_Controller.js
         petType } = req.body;
         const image = req.file ? req.file.filename : null;
         

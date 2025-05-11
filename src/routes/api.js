@@ -9,12 +9,7 @@ const api = express.Router();
 
 api.get('/pets', getPetAPI)
 api.post('/pets', fileUploadMiddleware('petAvatarImage'), postPetAPI)
-<<<<<<< HEAD
-
 api.put('/pets', fileUploadMiddleware('petAvatarImage'), putPetAPI)
-=======
-api.put('/pets', putPetAPI)
->>>>>>> 52b966c333ad4f7aa3eb48c3da6a42cb359f31f6
 api.delete('/pets', deletePetAPI)
 
 api.get('/users', checkValidJWT, getUserAPI)
