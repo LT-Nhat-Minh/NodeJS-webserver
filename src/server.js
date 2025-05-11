@@ -1,11 +1,8 @@
 require('dotenv').config()
 const express = require('express')
 const path = require('path')
-const configViewEngine = require('./config/viewEngine')
 const apiRoutes = require('./routes/api')
 const connection = require('./config/database')
-const mongoose = require('mongoose')
-const router = require('./routes/router')
 const cors = require('cors')
 
 const app = express()
@@ -13,7 +10,7 @@ const port = process.env.PORT || 8080
 const host = process.env.HOST_NAME || 'localhost'
 
 //config template engine
-configViewEngine(app);
+// configViewEngine(app);
 
 //cors config
 app.use(cors({
@@ -28,7 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 //routes
-app.use('/', router);
+// app.use('/', router);
 app.use('/v1/api', apiRoutes);
 
 (async () => {
