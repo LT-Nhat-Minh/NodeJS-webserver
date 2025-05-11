@@ -7,14 +7,23 @@ const cors = require('cors')
 
 const app = express()
 const port = process.env.PORT || 8080
-const host = process.env.HOST_NAME || '0.0.0.0'
+const host = process.env.HOST_NAME || 'localhost'
 
 //config template engine
 // configViewEngine(app);
 
 //cors config
+const allowedOrigins = ['http://localhost:3000', 'https://pets-adoption-full-stack-fe.vercel.app'];
+
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
 }));
 
 //config static files
@@ -31,9 +40,9 @@ app.use('/v1/api', apiRoutes);
 (async () => {
     try {
         await connection();
-        app.listen(port, () => {
-            console.log(`Server is running on http://${host}:${port}`);
-        });
+        app.listen(port, host, () => {
+            console.log(`Example app listening on port ${host}:${port}`)
+        })
     } catch (error) {
         console.error('Error:', error);
     }
