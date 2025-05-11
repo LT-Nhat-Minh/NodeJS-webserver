@@ -72,9 +72,31 @@ const registerAPI = async (req, res) => {
 }
 
 const logoutAPI = async (req, res) => {
+}
 
+const fetchUserAPI = async (req, res) => {
+    const { id } = req.body;
+        try {
+            const results = await getUserById(id);
+            if (!results) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            return res.status(200).json({
+                EC: 0,
+                data: results,
+                message: "Get user successfully",
+            });
+        }
+        catch (err) {
+            return res.status(500).json({
+                EC: 1,
+                error: err.message,
+                message: "Get user failed",
+            });
+        }
+    
 }
 
 module.exports = {
-    loginAPI, registerAPI, logoutAPI,
+    loginAPI, registerAPI, logoutAPI, fetchUserAPI
 }

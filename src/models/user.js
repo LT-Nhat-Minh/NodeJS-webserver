@@ -54,7 +54,7 @@ userSchema.methods.generateAuthToken = async function () {
         role: this.role,
     };
     const token = jwt.sign(payload, JWT_SECRET, {
-        expiresIn: '1',
+        expiresIn: '1d',
     });
     return token;
 };

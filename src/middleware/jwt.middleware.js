@@ -35,6 +35,30 @@ const checkValidJWT = (req, res, next) => {
     next();
 }
 
+//delete token
+const deleteToken = (req, res) => {
+    //delete token logic
+    const token = req.headers['authorization'];
+    if (!token) {
+        return res.status(401).json({
+            EC: 1,
+            data: null,
+            message: 'Unauthorized',
+            statusCode: 401,
+        });
+    }
+    //split token to get the actual token
+    const tokenWithoutBearer = token.split(' ')[1];
+    //delete token logic
+    jwt.destroy(tokenWithoutBearer);
+    return res.status(200).json({
+        EC: 0,
+        data: null,
+        message: 'Logout successfully',
+        statusCode: 200,
+    });
+}
+
 module.exports = {
-    checkValidJWT
+    checkValidJWT, deleteToken
 };

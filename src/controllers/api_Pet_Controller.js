@@ -162,19 +162,23 @@ const deletePetAPI = async (req, res) => {
         if (!result) {
             return res.status(404).json({
                 EC: 1,
+                data: null,
                 message: "Pet not found",
+                statusCode: 404,
             });
         }
         return res.status(200).json({
             EC: 0,
             data: result,
             message: "Delete pet successfully",
+            statusCode: 200,
         });
     } catch (err) {
         return res.status(500).json({
             EC: 1,
-            error: err.message,
-            message: "Delete pet failed",
+            data: null, 
+            message: err.message,
+            statusCode: 500,
         });
     }
 }

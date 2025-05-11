@@ -80,7 +80,7 @@ const postUserAPI = async (req, res) => {
 }
 
 const putUserAPI = async (req, res) => {
-    const { id, name, email, password } = req.body
+    const { id, name, email, password, phoneNumber, role } = req.body
     if (!id) {
         return res.status(400).json({
             EC: 1,
@@ -102,7 +102,7 @@ const putUserAPI = async (req, res) => {
     // }
 
     try {
-        const result = await updateUserByID(id, { name, email, password });
+        const result = await updateUserByID(id, { name, email, password, phoneNumber, role });
         if (!result) {
             return res.status(404).json({
                 EC: 1,

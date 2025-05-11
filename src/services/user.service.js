@@ -122,6 +122,7 @@ const handleUserLogin = async (data) => {
             name: user.name,
             email: user.email,
             phoneNumber: user.phoneNumber,
+            role: user.role,
         },
         access_token: token,
     }
