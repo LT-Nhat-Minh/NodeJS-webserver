@@ -52,7 +52,7 @@ const createUser = async (data) => {
 const updateUserByID = async (id, data) => {
     try {
         console.log('Updating user with ID:', id, 'and data:', data);
-        const result = await User.updateOne({ _id: id }, data);
+        const result = await User.findOneAndUpdate({ _id: id }, data);
         if (!result) {
             throw new Error('User not found');
         }
