@@ -40,17 +40,22 @@ const getAllPet = async (start, end) => {
 }
 
 const getPetById = async (id) => {
-    try {
         console.log('Fetching pet with ID:', id);
         const result = await Pet.findOne({ _id: id });
         if (!result) {
-            throw new Error('Pet not found');
+            throw {
+                EC: 1,
+                data: null,
+                message: 'Pet not found',
+                statusCode: 404,
+            };
         }
-        return result;
-    } catch (error) {
-        console.error('Error fetching pet:', error);
-        throw error;
-    }
+        return {
+            EC: 0,
+            data: result,
+            message: 'Get pet successfully',
+            statusCode: 200,
+        };
 }
 
 const createPet = async (data) => {
@@ -113,16 +118,17 @@ const deletePetByID = async (id) => {
     try {
         const pet = await getPetById(id)
 
-        // delete image file logic
-        const imagePath = path.join(__dirname, '../../public/images', pet.image);
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error('Error deleting image file:', err.message);
-            } else {
-                console.log('Image file deleted successfully:', imagePath);
-            }
-        });
-
+        //check if image file exists
+        if (pet.image) {
+            const imagePath = path.join(__dirname, '../../public/images', pet.image);
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error('Error deleting image file:', err.message);
+                } else {
+                    console.log('Image file deleted successfully:', imagePath);
+                }
+            });
+        }
         const result = await Pet.deleteOne({ _id: id });
         return result;
     } catch (error) {

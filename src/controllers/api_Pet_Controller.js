@@ -7,19 +7,26 @@ const getPetAPI = async (req, res) => {
         try {
             const results = await getPetById(id);
             if (!results) {
-                return res.status(404).json({ message: "Pet not found" });
+                return res.status(404).json({
+                    EC: 1,
+                    data: null,
+                    message: "Pet not found",
+                    statusCode: 404,
+                });
             }
             return res.status(200).json({
                 EC: 0,
-                data: results,
+                data: results.data,
                 message: "Get pet successfully",
+                statusCode: 200,
             });
         }
         catch (err) {
-            return res.status(500).json({
+            return res.status(err.statusCode || 500).json({
                 EC: 1,
                 error: err.message,
                 message: "Get pet failed",
+                statusCode: err.statusCode || 500,
             });
         }
     }
