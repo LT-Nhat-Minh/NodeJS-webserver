@@ -2,7 +2,7 @@ const Pet = require("../models/pet");
 const { getAllPet, getPetById, createPet, updatePetByID, deletePetByID } = require("../services/pet.service");
 
 const getPetAPI = async (req, res) => {
-    const { id } = req.query
+    const { id, start, limit } = req.query;
     if (id) {
         try {
             const results = await getPetById(id);
@@ -25,7 +25,7 @@ const getPetAPI = async (req, res) => {
     }
     else {
         try {
-            let results = await getAllPet();
+            const results = await getAllPet(start, limit);
             return res.status(200).json({
                 EC: 0,
                 data: results,

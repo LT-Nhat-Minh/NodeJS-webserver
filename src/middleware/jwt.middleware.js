@@ -3,14 +3,16 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
 
-const checkvalidJWT = (req, res, next) => {
+const checkValidJWT = (req, res, next) => {
     console.log('>>>checkvalidJWT', req.headers);
-
+    //check if token is in the header
     const token = req.headers['authorization'];
     if (!token) {
         return res.status(401).json({
             EC: 1,
+            data: null,
             message: 'Unauthorized',
+            statusCode: 401,
         });
     }
 
@@ -24,16 +26,15 @@ const checkvalidJWT = (req, res, next) => {
                 EC: 1,
                 data: null,
                 message: err.message,
+                statusCode: 401,
             });
         }
         // Attach the decoded token to the request object
-        req.user = decoded;
+        req._id = decoded._id;
     });
-
-
     next();
 }
 
 module.exports = {
-    checkvalidJWT
+    checkValidJWT
 };
