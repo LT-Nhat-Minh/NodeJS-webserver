@@ -1,5 +1,5 @@
 const Pet = require("../models/pet");
-const { getAllPet, getPetById, createPet, updatePetByID } = require("../services/pet.service");
+const { getAllPet, getPetById, createPet, updatePetByID, deletePetByID } = require("../services/pet.service");
 
 const getPetAPI = async (req, res) => {
     const { id } = req.query
@@ -107,10 +107,6 @@ const postPetAPI = async (req, res) => {
 };
 
 const putPetAPI = async (req, res) => {
-<<<<<<< HEAD:src/controllers/apiController.js
-    console.log('req.body', req.body);
-=======
->>>>>>> 52b966c333ad4f7aa3eb48c3da6a42cb359f31f6:src/controllers/api_Pet_Controller.js
     const { id, name, breed, color, age, weight, gender,
         neutered,
         rabies_vaccine,
@@ -121,14 +117,8 @@ const putPetAPI = async (req, res) => {
         special_diet,
         toilet_trained,
         des,
-<<<<<<< HEAD:src/controllers/apiController.js
-        
-=======
-        image,
->>>>>>> 52b966c333ad4f7aa3eb48c3da6a42cb359f31f6:src/controllers/api_Pet_Controller.js
         petType } = req.body;
         const image = req.file ? req.file.filename : null;
-        
     try {
         const result = await updatePetByID(id, {
             name, breed, color, age, weight, gender,
@@ -150,7 +140,6 @@ const putPetAPI = async (req, res) => {
             message: "Update pet successfully",
         });
     } catch (err) {
-
         return res.status(500).json({
             EC: 1,
             error: err.message,
@@ -162,7 +151,7 @@ const putPetAPI = async (req, res) => {
 const deletePetAPI = async (req, res) => {
     const { id } = req.body;
     try {
-        const result = await Pet.deleteOne({ _id: id });
+        const result = await deletePetByID(id);
         if (!result) {
             return res.status(404).json({
                 EC: 1,

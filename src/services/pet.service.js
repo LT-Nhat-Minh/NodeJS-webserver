@@ -50,11 +50,30 @@ const createPet = async (data) => {
 
 const updatePetByID = async (id, data) => {
     try {
-        console.log('Updating pet with ID:', id, 'and data:', data);
-        const result = await Pet.updateOne({ _id: id }, data);
-        if (!result) {
+        // Check if the pet exists
+        const pet = await Pet.findById(id);
+        if (!pet) {
             throw new Error('Pet not found');
         }
+
+        //check if updating image file
+        if(data.image){
+            const pet = await getPetById(id)
+            //check if image file exists
+            if (pet.image) {
+                const imagePath = path.join(__dirname, '../../public/images', pet.image);
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        console.error('Error deleting image file:', err.message);
+                    } else {
+                        console.log('Image file deleted successfully:', imagePath);
+                    }
+                });
+            }
+        }
+
+        console.log('Updating pet with ID:', id, 'and data:', data);
+        const result = await Pet.updateOne({ _id: id }, data);
         return result;
     }
     catch (error) {
@@ -66,7 +85,6 @@ const updatePetByID = async (id, data) => {
 const deletePetByID = async (id) => {
     try {
         const pet = await getPetById(id)
-        console.log(">>>pet", pet);
 
         // delete image file logic
         const imagePath = path.join(__dirname, '../../public/images', pet.image);
