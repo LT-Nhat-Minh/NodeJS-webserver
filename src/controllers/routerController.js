@@ -57,4 +57,6 @@ const handleCreatePet = async (req, res) => {
     return res.redirect('/create-pet');
 }
 
-module.exports = { getHomePage, handleDeletePet, getCreatePetPage, handleCreatePet };
+
+
+module.exports = { getHomePage, handleDeletePet, getCreatePetPage, handleCreatePet};

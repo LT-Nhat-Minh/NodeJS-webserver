@@ -65,7 +65,32 @@ const postPetAPI = async (req, res) => {
         });
     } else {
         try {
-            const result = await createPet(req.body);
+            const { id, name, breed, color, age, weight, gender,
+                neutered,
+                rabies_vaccine,
+                vaccinated,
+                friendly_with_human,
+                friendly_with_dog,
+                friendly_with_cat,
+                special_diet,
+                toilet_trained,
+                des,
+                petType } = req.body;
+            const image = req.file ? req.file.filename : null;
+            const result = await createPet({
+                id, name, breed, color, age, weight, gender,
+                neutered,
+                rabies_vaccine,
+                vaccinated,
+                friendly_with_human,
+                friendly_with_dog,
+                friendly_with_cat,
+                special_diet,
+                toilet_trained,
+                des,
+                petType,
+                image
+            });
             return res.status(200).json({
                 EC: 0,
                 data: result,
@@ -82,6 +107,10 @@ const postPetAPI = async (req, res) => {
 };
 
 const putPetAPI = async (req, res) => {
+<<<<<<< HEAD:src/controllers/apiController.js
+    console.log('req.body', req.body);
+=======
+>>>>>>> 52b966c333ad4f7aa3eb48c3da6a42cb359f31f6:src/controllers/api_Pet_Controller.js
     const { id, name, breed, color, age, weight, gender,
         neutered,
         rabies_vaccine,
@@ -92,8 +121,14 @@ const putPetAPI = async (req, res) => {
         special_diet,
         toilet_trained,
         des,
+<<<<<<< HEAD:src/controllers/apiController.js
+        
+=======
         image,
+>>>>>>> 52b966c333ad4f7aa3eb48c3da6a42cb359f31f6:src/controllers/api_Pet_Controller.js
         petType } = req.body;
+        const image = req.file ? req.file.filename : null;
+        
     try {
         const result = await updatePetByID(id, {
             name, breed, color, age, weight, gender,
