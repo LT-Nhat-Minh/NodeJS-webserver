@@ -7,7 +7,7 @@ const cors = require('cors')
 
 const app = express()
 const port = process.env.PORT || 8080
-const host = process.env.HOST_NAME || 'localhost'
+const host = process.env.HOST_NAME || '0.0.0.0'
 
 //config template engine
 // configViewEngine(app);
@@ -31,9 +31,9 @@ app.use('/v1/api', apiRoutes);
 (async () => {
     try {
         await connection();
-        app.listen(port, host, () => {
-            console.log(`Example app listening on port ${host}:${port}`)
-        })
+        app.listen(port, () => {
+            console.log(`Server is running on http://${host}:${port}`);
+        });
     } catch (error) {
         console.error('Error:', error);
     }
