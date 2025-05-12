@@ -20,6 +20,7 @@
     "mongoose": "^8.14.0",
     "multer": "^1.4.5-lts.2",
     "mysql2": "^3.14.1",
+    "node-cron": "^4.0.3",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

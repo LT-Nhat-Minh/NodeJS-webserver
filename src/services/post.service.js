@@ -68,7 +68,7 @@ const getPostByID = async (id) => {
 }
 
 const createPost = async (data) => {
-    const {time, title, blocks, authorID, lastModifiedBy, version} = data;
+    const {time, thumbnail, title, blocks, authorID, lastModifiedBy, version} = data;
     // if (!time || !block || !version || !authorID || !lastModifiedBy) {
     //     throw {
     //         EC: 1,
@@ -88,6 +88,7 @@ const createPost = async (data) => {
             lastModifiedBy,
             version,
         });
+        console.log('New post:', newPost);
         const result = await newPost.save();
         if (!result) {
             throw {

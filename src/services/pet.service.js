@@ -140,7 +140,13 @@ const deletePetByID = async (id) => {
         if (pet.image) {
             const imagePath = path.join(__dirname, '../../public/images/petAvatar/', pet.image);
             console.log("imagePath", imagePath);
-            await fs.promises.unlink(imagePath).catch((err) => {
+
+            //check if the file exists before deleting
+            const fileExists = await fs.promises.access(imagePath)
+                .then(() => true)
+                .catch(() => false);
+            if (fileExists) {
+                await fs.promises.unlink(imagePath).catch((err) => {
                 throw {
                     EC: 1,
                     data: null,
@@ -148,6 +154,8 @@ const deletePetByID = async (id) => {
                     statusCode: 500,
                 }
             });
+            }
+            
         }
 
         const result = await Pet.deleteOne({ _id: id });

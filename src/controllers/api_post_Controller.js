@@ -68,6 +68,7 @@ const postPostAPI = async (req, res) => {
             statusCode: 200,
         });
     } catch (err) {
+            console.error('Error creating post:', err);
             return res.status(err.statusCode || 500).json({
             EC: 1,
             data: null,

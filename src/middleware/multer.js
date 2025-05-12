@@ -1,12 +1,20 @@
 const multer = require('multer');
 const v4 = require('uuid').v4;
 const path = require('path');
+const fs = require('fs');
 
 const fileUploadMiddleware = (fileFieldName) => {
     return multer({
         storage: multer.diskStorage({
             destination: (req, file, cb) => {
-                cb(null, `public/images/${fileFieldName}`);
+                const uploadDir = `public/images/${fileFieldName}`;
+
+                // Check if directory exists, if not create it
+                if (!fs.existsSync(uploadDir)) {
+                    fs.mkdirSync(uploadDir, { recursive: true });
+                }
+
+                cb(null, uploadDir);
             },
             filename: (req, file, cb) => {
                 const uniqueSuffix = v4() + '-' + Date.now() + path.extname(file.originalname);

@@ -5,6 +5,7 @@ const { getUserAPI, postUserAPI, putUserAPI, deleteUserAPI } = require('../contr
 const { loginAPI, registerAPI, logoutAPI, fetchUserAPI } = require('../controllers/api_auth_Controller');
 const { checkValidJWT, deleteToken } = require('../middleware/jwt.middleware');
 const { postPostAPI, getPostAPI, deletePostAPI, updatePostAPI } = require('../controllers/api_post_Controller');
+const { uploadFileAPI } = require('../controllers/api_uploadFile_Controller');
 
 const api = express.Router();
 
@@ -27,5 +28,8 @@ api.get('/posts', getPostAPI);
 api.post('/posts', fileUploadMiddleware("postThumbnail"), postPostAPI);
 api.put('/posts', fileUploadMiddleware("postThumbnail"), updatePostAPI);
 api.delete('/posts', deletePostAPI);
+
+// Upload temporary file
+api.post('/upload', fileUploadMiddleware("temp"), uploadFileAPI);
 
 module.exports = api;
