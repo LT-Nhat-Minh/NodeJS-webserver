@@ -131,9 +131,42 @@ const updatePetByID = async (id, data) => {
 };
 
 const deletePetByID = async (id) => {
-    const pet = await getPetById(id);
+    const res = await getPetById(id);
 
-    if (!pet) {
+    if(res && res.data) {
+        const pet = res.data;
+        
+        // Check if the pet has an image and delete it
+        if (pet.image) {
+            const imagePath = path.join(__dirname, '../../public/images/petAvatar/', pet.image);
+            console.log("imagePath", imagePath);
+            await fs.promises.unlink(imagePath).catch((err) => {
+                throw {
+                    EC: 1,
+                    data: null,
+                    message: 'Error deleting image file',
+                    statusCode: 500,
+                }
+            });
+        }
+
+        const result = await Pet.deleteOne({ _id: id });
+        if (!result) {
+            throw {
+                EC: 1,
+                data: null,
+                message: 'Error deleting pet',
+                statusCode: 500,
+            };
+        }
+        return {
+            EC: 0,
+            data: result,
+            message: 'Delete pet successfully',
+            statusCode: 200,
+        };
+    }
+    else {
         throw {
             EC: 1,
             data: null,
@@ -142,25 +175,31 @@ const deletePetByID = async (id) => {
         };
     }
 
-    // Check if the pet has an image and delete it
-    if (pet.image) {
-        const imagePath = path.join(__dirname, '../../public/images', pet.image);
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error('Error deleting image file:', err.message);
-            } else {
-                console.log('Image file deleted successfully:', imagePath);
-            }
-        });
-    }
+    // if (!res) {
+    //     throw {
+    //         EC: 1,
+    //         data: null,
+    //         message: 'Pet not found',
+    //         statusCode: 404,
+    //     };
+    // }
 
-    const result = await Pet.deleteOne({ _id: id });
-    return {
-        EC: 0,
-        data: result,
-        message: 'Delete pet successfully',
-        statusCode: 200,
-    };
+    // console.log("pet", pet);
+
+    // // Check if the pet has an image and delete it
+    // if (pet.image) {
+    //     const imagePath = path.join(__dirname, '../../public/images/petAvatar/', pet.image);
+    //     console.log("imagePath", imagePath);
+    //     fs.unlink(imagePath, (err) => {
+    //         if (err) {
+    //             console.error('Error deleting image file:', err.message);
+    //         } else {
+    //             console.log('Image file deleted successfully:', imagePath);
+    //         }
+    //     });
+    // }
+
+    
 };
 
 module.exports = {

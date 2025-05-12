@@ -119,6 +119,8 @@ const postPetAPI = async (req, res) => {
 };
 
 const putPetAPI = async (req, res) => {
+    console.log(">>>putPetAPI req",req.body);
+    console.log(">>>putPetAPI file",req.file);
     const { id, name, breed, color, age, weight, gender,
         neutered,
         rabies_vaccine,
@@ -161,7 +163,7 @@ const putPetAPI = async (req, res) => {
 }
 
 const deletePetAPI = async (req, res) => {
-    const { id } = req.body;
+    const { id } = req.query;
     try {
         const result = await deletePetByID(id);
         if (!result) {

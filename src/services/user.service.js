@@ -4,11 +4,21 @@ const User = require('../models/user');
 const getAllUser = async () => {
     try {
         const result = await User.find({});
-        return result;
+        return {
+            EC: 0,
+            data: result,
+            message: 'Get all users successfully',
+            statusCode: 200,
+        };
     }
     catch (error) {
         console.error('Error fetching users:', error);
-        throw error;
+        throw {
+            EC: 1,
+            data: null,
+            message: error.message,
+            statusCode: 500,
+        };
     }
 }
 
@@ -44,37 +54,106 @@ const getUserByEmail = async (email) => {
     try {
         const result = await User.find({ email: email });
         if (!result) {
-            throw new Error('User not found');
+            throw{
+                EC: 1,
+                data: null,
+                message: 'User not found',
+                statusCode: 404,
+            }
         }
-        return result;
+        return {
+            EC: 0,
+            data: result,
+            message: 'Get user successfully',
+            statusCode: 200,
+        };
     } catch (error) {
-        console.error('Error fetching user:', error);
-        throw error;
+        throw {
+            EC: 1,
+            data: null,
+            message: error.message,
+            statusCode: 500,
+        };
     }
 }
 
 const createUser = async (data) => {
-    try {
-        const user = await User.create(data);
-        console.log('User created:', user); // This should log the created user
-        return user;
-    } catch (error) {
-        console.error('Error creating user:', error); // This should log any error that occurs
-        throw error;
+    const { name, email, password, phoneNumber, role } = data;
+    try{
+        // Check if user already exists
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            throw {
+                EC: 1,
+                data: null,
+                message: 'Email already exists',
+                statusCode: 400,
+            };
+        }
+        // Create new user
+        const newUser = new User({
+            name,
+            email,
+            password,
+            phoneNumber,
+            role
+        });
+        await newUser.save();
+        return {
+            EC: 0,
+            data: newUser,
+            message: 'User created successfully',
+            statusCode: 200,
+        };  
+    }
+    catch (error) {
+        console.error('Error creating user:', error);
+        throw {
+            EC: 1,
+            data: null,
+            message: error.message,
+            statusCode: 500,
+        };
     }
 }
 
-const updateUserByID = async (id, data) => {
-    try {
-        console.log('Updating user with ID:', id, 'and data:', data);
-        const result = await User.findOneAndUpdate({ _id: id }, data);
+const updateUserByID = async (data) => {
+    const { id, name, email, phoneNumber, role } = data;
+    console.log(">>>data", data);
+    try{
+        const result = await User.findByIdAndUpdate(
+            { _id: id },
+            {
+                name,
+                email,
+                phoneNumber,
+                role
+            },
+            { new: true }
+        );
         if (!result) {
-            throw new Error('User not found');
+            throw {
+                EC: 1,
+                data: null,
+                message: 'User not found',
+                statusCode: 404,
+            };
         }
-        return result;
-    } catch (error) {
+        return {
+            EC: 0,
+            data: result,
+            message: 'User updated successfully',
+            statusCode: 200,
+        };
+    }
+    catch (error) {
         console.error('Error updating user:', error);
-        throw error;
+        throw {
+            EC: 1,
+            data: null,
+            message: error.message,
+            statusCode: 500,
+        };
     }
 }
 
@@ -94,10 +173,20 @@ const deleteUserByID = async (id) => {
         // });
 
         const result = await User.deleteOne({ _id: id });
-        return result;
+        return {
+            EC: 0,
+            data: result,
+            message: 'User deleted successfully',
+            statusCode: 200,
+        };
     } catch (error) {
         console.error('Error deleting user:', error);
-        throw error;
+        throw {
+            EC: 1,
+            data: null,
+            message: error.message,
+            statusCode: 500,
+        };
     }
 }
 
@@ -167,7 +256,12 @@ const handleUserRegister = async (data) => {
 
     await newUser.save();
 
-    return newUser;
+    return {
+        EC: 0,
+        data: newUser,
+        message: 'User registered successfully',
+        statusCode: 200,
+    };
 }
 
 module.exports = {

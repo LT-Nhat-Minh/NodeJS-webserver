@@ -22,18 +22,18 @@ const loginAPI = async (req, res) => {
 }
 
 const registerAPI = async (req, res) => {
-    const { name, password, email, phoneNumber } = req.body
+    const { name, password, email, phoneNumber} = req.body
     try{
         //check validation fields
-        if (!name || !password || !email || !phoneNumber) {
+        if (!name || !password || !email || !phoneNumber || !role) {
             return res.status(400).json({
                 EC: 1,
                 data: null,
-                message: 'Missing required fields (name, password, email, phoneNumber)',
+                message: 'Missing required fields (name, password, email, phoneNumber, role)',
                 statusCode: 400,
             });
         }
-        const user = await handleUserRegister({ name, password, email, phoneNumber });
+        const user = await handleUserRegister({ name, password, email, phoneNumber});
 
         return res.status(200).json({
             EC: 0,

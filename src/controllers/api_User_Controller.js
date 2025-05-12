@@ -6,19 +6,27 @@ const getUserAPI = async (req, res) => {
         try {
             const results = await getUserById(id);
             if (!results) {
-                return res.status(404).json({ message: "User not found" });
+                return res.status(404).json({
+                    EC: 1,
+                    data: null,
+                    message: "User not found",
+                    statusCode: 404,
+                });
             }
             return res.status(200).json({
                 EC: 0,
-                data: results,
+                data: results.data,
                 message: "Get user successfully",
+                statusCode: 200,
             });
         }
         catch (err) {
             return res.status(500).json({
                 EC: 1,
+                data: null,
                 error: err.message,
                 message: "Get user failed",
+                statusCode: 500,
             });
         }
     }
@@ -27,14 +35,17 @@ const getUserAPI = async (req, res) => {
             let results = await getAllUser();
             return res.status(200).json({
                 EC: 0,
-                data: results,
+                data: results.data,
                 message: "Get all users successfully",
+                statusCode: 200,
             });
         } catch (err) {
             return res.status(500).json({
                 EC: 1,
+                data: null,
                 error: err.message,
                 message: "Get all users failed",
+                statusCode: 500,
             });
         }
     }
@@ -48,7 +59,7 @@ const postUserAPI = async (req, res) => {
         for (const user of req.body) {
             try {
                 const result = await createUser(user);
-                results.push(result);
+                results.push(result.data);
             } catch (err) {
                 errors.push(err.message);
             }
@@ -59,6 +70,7 @@ const postUserAPI = async (req, res) => {
             data: results,
             errors: errors,
             message: "Create users successfully",
+            statusCode: 200,
         });
     }
     else {
@@ -66,59 +78,56 @@ const postUserAPI = async (req, res) => {
             const result = await createUser(req.body);
             return res.status(200).json({
                 EC: 0,
-                data: result,
+                data: result.data,
                 message: "Create user successfully",
+                statusCode: 200,
             });
         } catch (err) {
             return res.status(500).json({
                 EC: 1,
+                data: null,
                 error: err.message,
                 message: "Create user failed",
+                statusCode: 500,
             });
         }
     }
 }
 
 const putUserAPI = async (req, res) => {
-    const { id, name, email, password, phoneNumber, role } = req.body
+    const { id, name, email, phoneNumber, role } = req.body
     if (!id) {
         return res.status(400).json({
             EC: 1,
+            data: null,
             message: "Missing id",
+            statusCode: 400,
         });
     }
 
-    //check if email is changing
-    // const user = await getUserById(id);
-    // if (user.email !== email) {
-    //     //check if email is already used by another user
-    //     const existingUser = await getUserByEmail(email);
-    //     if (existingUser) {
-    //         return res.status(400).json({
-    //             EC: 1,
-    //             message: "Email is already used by another user",
-    //         });
-    //     }
-    // }
-
     try {
-        const result = await updateUserByID(id, { name, email, password, phoneNumber, role });
+        const result = await updateUserByID({ id, name, email, phoneNumber, role });
+        console.log(result);
         if (!result) {
             return res.status(404).json({
                 EC: 1,
+                data: null,
                 message: "User not found",
+                statusCode: 404,
             });
         }
         return res.status(200).json({
             EC: 0,
-            data: result,
+            data: result.data,
             message: "Update user successfully",
         });
     } catch (err) {
         return res.status(500).json({
             EC: 1,
+            data: null,
             error: err.message,
             message: "Update user failed",
+            statusCode: 500,
         });
     }
 }
@@ -128,7 +137,9 @@ const deleteUserAPI = async (req, res) => {
     if (!id) {
         return res.status(400).json({
             EC: 1,
+            data: null,
             message: "Missing id",
+            statusCode: 400,
         });
     }
     try {
@@ -136,19 +147,24 @@ const deleteUserAPI = async (req, res) => {
         if (!result) {
             return res.status(404).json({
                 EC: 1,
+                data: null,
                 message: "User not found",
+                statusCode: 404,
             });
         }
         return res.status(200).json({
             EC: 0,
-            data: result,
+            data: result.data,
             message: "Delete user successfully",
+            statusCode: 200,
         });
     } catch (err) {
         return res.status(500).json({
             EC: 1,
+            data: null,
             error: err.message,
             message: "Delete user failed",
+            statusCode: 500,
         });
     }
 }
