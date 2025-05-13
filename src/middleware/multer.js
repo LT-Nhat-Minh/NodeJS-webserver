@@ -4,10 +4,12 @@ const path = require('path');
 const fs = require('fs');
 
 const fileUploadMiddleware = (fileFieldName) => {
+    
     return multer({
         storage: multer.diskStorage({
             destination: (req, file, cb) => {
                 const uploadDir = `public/images/${fileFieldName}`;
+                console.log("Upload directory:", uploadDir);
 
                 // Check if directory exists, if not create it
                 if (!fs.existsSync(uploadDir)) {

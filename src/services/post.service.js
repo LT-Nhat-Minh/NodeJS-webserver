@@ -69,15 +69,6 @@ const getPostByID = async (id) => {
 
 const createPost = async (data) => {
     const {time, thumbnail, title, blocks, authorID, lastModifiedBy, version} = data;
-    // if (!time || !block || !version || !authorID || !lastModifiedBy) {
-    //     throw {
-    //         EC: 1,
-    //         data: null,
-    //         message: 'Missing required fields (time, block, version, authorID, lastModifiedBy)',
-    //         statusCode: 400,
-    //     };
-    // }
-
     try {
         const newPost = new Post({
             time,
@@ -88,7 +79,6 @@ const createPost = async (data) => {
             lastModifiedBy,
             version,
         });
-        console.log('New post:', newPost);
         const result = await newPost.save();
         if (!result) {
             throw {
@@ -117,8 +107,8 @@ const createPost = async (data) => {
     
 }
 
-const updatePostByID = async (req, res) => {
-    const { id, thumbnail, title, time, blocks,  authorID, lastModifiedBy, version } = req.body;
+const updatePostByID = async (data) => {
+    const { id, thumbnail, title, time, blocks,  authorID, lastModifiedBy, version } = data;
     try {
         const result = await Post.findByIdAndUpdate({_id: id}, {
             time,

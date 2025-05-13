@@ -49,7 +49,10 @@ const getPostAPI = async (req, res) => {
 }
 
 const postPostAPI = async (req, res) => {
-    const {time, thumbnail, title, blocks, version, authorID, lastModifiedBy} = req.body;
+    const {time, title, version, authorID, lastModifiedBy} = req.body;
+    const blocks = req.body.blocks ? JSON.parse(req.body.blocks) : null;
+    console.log("req.file", req.file);
+    const thumbnail = req.file ? req.file.filename : null;
     try {
         const result = await createPost({
             time,
@@ -60,7 +63,6 @@ const postPostAPI = async (req, res) => {
             authorID,
             lastModifiedBy
         });
-        
         return res.status(200).json({
             EC: 0,
             data: result.data,
@@ -79,9 +81,12 @@ const postPostAPI = async (req, res) => {
 }
 
 const updatePostAPI = async (req, res) => {
-    const { id, thumbnail, title, time, blocks,  authorID, lastModifiedBy, version } = req.body;
+    const { id, title, time,  authorID, lastModifiedBy, version } = req.body;
+    const blocks = req.body.blocks ? JSON.parse(req.body.blocks) : null;
+    const thumbnail = req.file ? req.file.filename : null;
     try {
-        const result = await updatePostByID(id, {
+        const result = await updatePostByID({
+            id,
             time,
             thumbnail,
             title,

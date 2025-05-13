@@ -1,4 +1,6 @@
 export const uploadFileAPI = async (req, res) => {
+
+    console.log("Upload file API called, >>>req.file", req.file);
     try {
         const file = req.file;
         if (!file) {
